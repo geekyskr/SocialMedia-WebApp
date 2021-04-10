@@ -7,9 +7,17 @@ function Login(){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const login = ()=>{
     Axios.post('http://localhost:3001/user/login', {username: username, password: password}).then((responce)=>{
-      console.log(responce);
+      if(responce.data.loggedIn){
+        localStorage.setItem ("loggedIn", true);
+        localStorage.setItem ("username", responce.data.username);
+      }
+      else{
+        setErrorMessage(responce.data.message);
+      }
     })
   }
   return (
@@ -23,6 +31,7 @@ function Login(){
           setPassword(event.target.value);
         }} />
         <button onClick = {login}> Login </button>
+        <h2 style = {{color: "red"}}>{errorMessage}</h2>
       </div>
     </div>
   )
