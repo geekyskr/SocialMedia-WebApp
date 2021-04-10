@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './Navbar.css';
 
 function Navbar(){
+  const [loggedIn, setLoggedIn] = useState(true);
+
+  useEffect(()=>{
+    setLoggedIn(JSON.parse(localStorage.getItem('loggedIn')))
+  }, [localStorage.getItem('loggedIn')])
+
   return (
     <div className = "Navbar">
       <a href="/">Home</a>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
+      {loggedIn ? (<>
+        <a href="/upload">Upload</a>
+        <a href="/profile">Profile</a>
+      </>) : (<>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      </>)}
     </div>
   )
 }
